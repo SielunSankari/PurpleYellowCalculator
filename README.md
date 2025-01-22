@@ -46,7 +46,7 @@ Follow these steps to set up the calculator on your system:
 
 3. Run the main Python script:
    ```bash
-   python calculator_by_batyrzhan.py
+   python main.py
    ```
 
 ---
