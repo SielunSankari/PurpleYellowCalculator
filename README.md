@@ -58,7 +58,7 @@ Here’s how the project is organized:
 ```
 CalculatorByBatyrzhan/
 ├── src/
-│   └── main.py        # Main code
+│   └── main.py              # Main code
 ├── assets/
 │   └── calculator_icon.ico  # Icon
 ├── README.md                # Description of the project
