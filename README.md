@@ -36,7 +36,7 @@ Follow these steps to set up the calculator on your system:
 1. Clone the repository or download the project files.
    ```bash
    git clone https://github.com/SielunSankari/soft-purple-calc.git
-   cd calculator_by_batyrzhan
+   cd soft-purple-calc
    ```
 
 2. Install the required dependencies using `pip`:
@@ -56,7 +56,7 @@ Follow these steps to set up the calculator on your system:
 Here’s how the project is organized:
 
 ```
-CalculatorByBatyrzhan/
+soft-purple-calc/
 ├── src/
 │   └── main.py              # Main code
 ├── assets/
