@@ -35,7 +35,7 @@ Follow these steps to set up the calculator on your system:
 
 1. Clone the repository or download the project files.
    ```bash
-   git clone https://github.com/SielunSankari/PurpleYellowCalculator.git
+   git clone https://github.com/SielunSankari/soft-purple-calc.git
    cd calculator_by_batyrzhan
    ```
 
