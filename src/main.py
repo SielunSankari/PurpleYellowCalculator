@@ -285,7 +285,7 @@ class Calculator:
 
     # Updates the current expression label with the current expression (up to 14 characters)
     def update_label(self):
-        self.label.configure(text=self.current_expression[:14])
+        self.label.configure(text=self.current_expression)
 
     # Run the calculator app
     def run(self):
