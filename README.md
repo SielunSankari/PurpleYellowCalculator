@@ -1,6 +1,6 @@
 # Calculator By Batyrzhan
 
-![Calculator Icon](assets/social_preview.png)
+![Image](https://github.com/user-attachments/assets/19dc4cf3-13b3-4ed7-b31a-e13253d7ba65)
 
 A minimalistic and aesthetically pleasing calculator built with Python using `customtkinter`. It features simple functionality with a random emoji at the start of the operation (¬‿¬)
 
