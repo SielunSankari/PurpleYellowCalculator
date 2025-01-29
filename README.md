@@ -61,8 +61,8 @@ soft-purple-calc/
 │   └── main.py              # Main code
 ├── assets/
 │   └── calculator_icon.ico  # Icon
-├── README.md                # Description of the project
 ├── LICENSE                  # MIT license
+├── README.md                # Description of the project
 └── requirements.txt         # Requirements
 
 ```
