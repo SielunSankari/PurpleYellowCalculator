@@ -29,7 +29,6 @@ class Calculator:
 
         # Set the path to the calculator icon
         ICON_PATH = os.path.join(os.path.dirname(__file__), "../assets/calculator_icon.ico")
-        # Create the full path to the icon file located in the 'assets' folder
 
         # Set the application ID for Windows taskbar icon grouping
         app_id = "com.batyrzhan.calculator"
@@ -61,7 +60,7 @@ class Calculator:
             "-": "-",
         }
 
-       # Create the frame that will hold the calculator buttons
+        # Create the frame that will hold the calculator buttons
         self.buttons_frame = self.create_buttons_frame()
 
         # Configure the first row to expand equally when the window is resized
@@ -107,6 +106,7 @@ class Calculator:
         return self.current_expression != self.ERROR_MESSAGE
 
     def bind_keys(self):
+
         # Binding for the Enter key to evaluate the expression
         self.window.bind("<Return>", lambda event: self.evaluate() if self.is_valid_expression() else self.clear())
 
@@ -148,10 +148,18 @@ class Calculator:
 
     # Add a value to the current expression and update the display
     def add_to_expression(self, value):
-        if self.current_expression in (self.ERROR_MESSAGE, "0.0", "0", *chain(self.emotions)):
+        if self.current_expression in (self.ERROR_MESSAGE, *chain(self.emotions)):
             self.clear()
+
         if self.current_expression in ("0.0", "0", *chain(self.emotions)):
             self.current_expression = ""
+
+        if value == ".":
+            if not self.current_expression or self.current_expression[-1] in self.operations:
+                self.current_expression = "0"
+            elif "." in self.current_expression:
+                return
+
         self.current_expression += str(value)
         self.update_label()
 
@@ -166,19 +174,24 @@ class Calculator:
         if self.current_expression in (self.ERROR_MESSAGE, *chain(self.emotions)):
             self.current_expression = "0"
             self.clear()
+
         if not self.current_expression and not self.total_expression:
             return
+
         if not self.current_expression and self.total_expression[-1] in self.operations:
             self.total_expression = self.total_expression[:-1] + operator
+
         else:
             self.total_expression += self.current_expression + operator
             self.current_expression = ""
+
         self.update_total_label()
         self.update_label()
 
     # Create operator buttons (+, -, *, /)
     def create_operator_buttons(self):
         row_index = 0
+
         for operator, symbol in self.operations.items():
             button = ctk.CTkButton(self.buttons_frame, text=symbol, fg_color=PURPLE, text_color=WHITE, font=DEFAULT_FONT_STYLE, corner_radius=0, border_width=0, hover_color=LABEL_COLOR, command=lambda operator_symbol=operator: self.append_operator(operator_symbol))
             button.grid(row=row_index, column=4, sticky="nsew")
@@ -195,8 +208,10 @@ class Calculator:
     def clear_entry(self):
         if len(self.current_expression) > 1 and self.current_expression not in (self.ERROR_MESSAGE, "0.0", "0", *chain(self.emotions)):
             self.current_expression = self.current_expression[:-1]
+
         else:
             self.current_expression = "0.0"
+
         self.update_label()
 
     def create_clear_entry_button(self):
@@ -242,6 +257,7 @@ class Calculator:
 
         self.total_expression += self.current_expression
         self.update_total_label()
+
         try:
             result = eval(self.total_expression)
             self.current_expression = str(round(result, 2))
@@ -276,6 +292,7 @@ class Calculator:
         self.window.mainloop()
 
 if __name__ == "__main__":
+    # Create an instance of the Calculator class and run the application
     calc = Calculator()
     calc.run()
 
