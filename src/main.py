@@ -273,7 +273,7 @@ class Calculator:
         """
         try:
             value = float(self.current_expression)
-            self.current_expression = str(round(value**2, 2))
+            self.current_expression = str(round(value**2, 12))
         except ValueError:
             self.current_expression = self.ERROR_MESSAGE
             self.update_label()
@@ -296,7 +296,7 @@ class Calculator:
             value = float(self.current_expression)
             if value < 0:
                 raise ValueError("Square root of negative number is not possible")
-            self.current_expression = str(round(value**0.5, 2))
+            self.current_expression = str(round(value**0.5, 12))
         except ValueError as e:
             self.current_expression = self.ERROR_MESSAGE
             self.update_label()
@@ -327,7 +327,7 @@ class Calculator:
             aeval = Interpreter()
             result = aeval(self.total_expression)
             if isinstance(result, (int, float)):
-                self.current_expression = str(round(result, 2))
+                self.current_expression = str(round(result, 12))
                 self.total_expression = ""
             else:
                 raise ValueError("Invalid result")
