@@ -1,6 +1,6 @@
-# Calculator By Batyrzhan
+# CTK Calculator by Batyrzhan
 
-![Image](https://github.com/user-attachments/assets/19dc4cf3-13b3-4ed7-b31a-e13253d7ba65)
+![Image](https://github.com/user-attachments/assets/05a6fb9e-4300-40ca-b130-73310aff5279)
 
 A minimalistic and aesthetically pleasing calculator built with Python using `customtkinter`. It features simple functionality with a random emoji at the start of the operation (¬‿¬)
 
@@ -21,6 +21,7 @@ Before running the project, ensure you have the following installed:
 - Required Python libraries:
   ```plaintext
   customtkinter
+  asteval
   random
   itertools
   ctypes
@@ -35,13 +36,13 @@ Follow these steps to set up the calculator on your system:
 
 1. Clone the repository or download the project files.
    ```bash
-   git clone https://github.com/SielunSankari/soft-purple-calc.git
-   cd soft-purple-calc
+   git clone https://github.com/SielunSankari/cozy-ctk-calc.git
+   cd cozy-ctk-calc
    ```
 
 2. Install the required dependencies using `pip`:
    ```bash
-   pip install customtkinter
+   pip install customtkinter asteval
    ```
 
 3. Run the main Python script:
@@ -56,7 +57,7 @@ Follow these steps to set up the calculator on your system:
 Here’s how the project is organized:
 
 ```
-soft-purple-calc/
+cozy-ctk-calc/
 ├── src/
 │   └── main.py              # Main code
 ├── assets/
