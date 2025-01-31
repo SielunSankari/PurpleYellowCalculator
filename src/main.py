@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from asteval import Interpreter
 import random
 from itertools import chain
 import ctypes
@@ -18,7 +19,18 @@ DIGITS_FONT_STYLE = ("Arial", 25, "bold")
 DEFAULT_FONT_STYLE = ("Arial", 25,  "bold")
 
 class Calculator:
+    """
+    The Calculator class is a graphical calculator
+    created using the CustomTkinter library.
+    It supports basic mathematical operations such as addition,
+    subtraction, multiplication, division, squaring,
+    and square root extraction.
+    """
+
     def __init__(self):
+        """
+        Initializes the main application window and configures the interface settings.
+        """
         self.window = ctk.CTk()
         self.window.geometry("375x667+4+4")
         self.window.resizable(0, 0)
@@ -29,18 +41,15 @@ class Calculator:
 
         # Set the path to the calculator icon
         ICON_PATH = os.path.join(os.path.dirname(__file__), "../assets/calculator_icon.ico")
-
-        # Set the application ID for Windows taskbar icon grouping
         app_id = "com.batyrzhan.calculator"
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)  # Set the app's ID for better taskbar integration
-
-        # Set the window icon for the calculator using the icon path
         self.window.iconbitmap(ICON_PATH)  # Apply the icon to the window
 
         # Initialize with a random emotion to display at the start
         self.current_expression = self.get_random_emotion()
-
         self.total_expression = ""
+
+        # Create the display frame and labels
         self.display_frame = self.create_display_frame()
         self.total_label, self.label = self.create_display_labels()
 
@@ -60,13 +69,9 @@ class Calculator:
             "-": "-",
         }
 
-        # Create the frame that will hold the calculator buttons
+        # Create the buttons frame and add all the buttons
         self.buttons_frame = self.create_buttons_frame()
-
-        # Configure the first row to expand equally when the window is resized
         self.buttons_frame.rowconfigure(0, weight=1)
-
-        # Loop through rows and columns to configure the grid layout of buttons
         for x in range(1, 5):
             self.buttons_frame.rowconfigure(x, weight=1)  # Allow rows 1 to 4 to expand equally
             self.buttons_frame.columnconfigure(x, weight=1)  # Allow columns 1 to 4 to expand equally
@@ -83,17 +88,19 @@ class Calculator:
         # Bind keyboard keys for easy input using the keyboard
         self.bind_keys()
 
-    # Returns a random emotion from the list
     def get_random_emotion(self):
+        """
+        Returns a random emoticon to display at the start of the application.
+        """
         self.emotions = [
             "(¬‿¬)",
-            "(:>)",
+            ":>",
             "(≧◡≦)",
             "(^_^)",
             "(｡♥‿♥｡)",
             "(≧ω≦)",
             "(≧∇≦)/",
-            "(:3)",
+            ":3",
             "(˘︶˘).｡.:*♡",
             "(✧ω✧)",
             "(,,>﹏<,,)",
@@ -101,12 +108,16 @@ class Calculator:
         ]
         return random.choice(self.emotions)
 
-    # Checks if the current expression is valid (not an error message)
     def is_valid_expression(self):
+        """
+        Checks if the current expression is valid (not an error message).
+        """
         return self.current_expression != self.ERROR_MESSAGE
 
     def bind_keys(self):
-
+        """
+        Binds keyboard keys to the corresponding actions.
+        """
         # Binding for the Enter key to evaluate the expression
         self.window.bind("<Return>", lambda event: self.evaluate() if self.is_valid_expression() else self.clear())
 
@@ -124,15 +135,25 @@ class Calculator:
         # Binding for the "C" (Escape) key
         self.window.bind("<Escape>", lambda event: self.clear())
 
-    # Create special buttons like Clear, Equals, Square, and Square Root
     def create_special_buttons(self):
+        """
+        Creates special calculator buttons:
+        - CE (Clear Entry)
+        - = (Equals)
+        - x² (Square)
+        - √x (Square Root)
+        """
         self.create_clear_entry_button()
         self.create_equals_button()
         self.create_square_button()
         self.create_sqrt_button()
 
-    # Create the labels to display the total and current expressions on the calculator screen
     def create_display_labels(self):
+        """
+        Creates labels to display the current and total expressions on the calculator screen.
+        - total_label: Displays the total expression (e.g., "12 + 17").
+        - label: Displays the current value or result.
+        """
         total_label = ctk.CTkLabel(self.display_frame, text=self.total_expression, anchor="e", bg_color=LABEL_COLOR, text_color=WHITE, padx=24, font=SMALL_FONT_STYLE)
         total_label.pack(expand=True, fill="both")
 
@@ -140,19 +161,33 @@ class Calculator:
         label.pack(expand=True, fill="both")
         return total_label, label
 
-    # Create the frame that holds the display area of the calculator
     def create_display_frame(self):
+        """
+        Creates frames for the area of expressions displayed on the calculator.
+        This frame contains tags for current and general expressions.
+        """
         frame = ctk.CTkFrame(self.window, height=221, fg_color=OFF_WHITE)
         frame.pack(expand=True, fill="both")
         return frame
 
-    # Add a value to the current expression and update the display
     def add_to_expression(self, value):
+        """
+        Adds a value (digit or dot) to the current expression.
+        If the current expression is a mistake or contains an emotion, it is cleared.
+        Checks the correctness of adding a decimal point.
+        """
         if self.current_expression in (self.ERROR_MESSAGE, *chain(self.emotions)):
             self.clear()
 
-        if self.current_expression in ("0.0", "0", *chain(self.emotions)):
-            self.current_expression = ""
+        if self.current_expression in ("0"):
+            if value == "0":
+                return
+            elif value == ".":
+                self.current_expression = "0"
+            else:
+                self.current_expression = str(value)
+                self.update_label()
+                return
 
         if value == ".":
             if not self.current_expression or self.current_expression[-1] in self.operations:
@@ -163,24 +198,27 @@ class Calculator:
         self.current_expression += str(value)
         self.update_label()
 
-    # Create digit buttons (0-9 and '.')
     def create_digit_buttons(self):
+        """
+        Creates buttons for numbers (0-9) and decimal points.
+        Each button is associated with the method add_to_expression.
+        """
         for digit, grid_values in self.digits.items():
             button = ctk.CTkButton(self.buttons_frame, text=str(digit), fg_color=WHITE, text_color=LABEL_COLOR, font=DIGITS_FONT_STYLE, corner_radius=0, border_width=0, hover_color=OFF_WHITE, command=lambda digit_value=digit: self.add_to_expression(digit_value))
             button.grid(row=grid_values[0], column=grid_values[1], sticky="nsew")
 
-    # Append the operator to the expression and update the display
     def append_operator(self, operator):
+        """
+        Appends an operator to the current expression.
+        If the current expression is a mistake or emotion, it is cleared.
+        """
         if self.current_expression in (self.ERROR_MESSAGE, *chain(self.emotions)):
             self.current_expression = "0"
             self.clear()
-
         if not self.current_expression and not self.total_expression:
             return
-
         if not self.current_expression and self.total_expression[-1] in self.operations:
             self.total_expression = self.total_expression[:-1] + operator
-
         else:
             self.total_expression += self.current_expression + operator
             self.current_expression = ""
@@ -188,38 +226,51 @@ class Calculator:
         self.update_total_label()
         self.update_label()
 
-    # Create operator buttons (+, -, *, /)
     def create_operator_buttons(self):
+        """
+        Creates buttons for operators (+, -, *, /).
+        Each button is associated with the method append_operator.
+        """
         row_index = 0
-
         for operator, symbol in self.operations.items():
             button = ctk.CTkButton(self.buttons_frame, text=symbol, fg_color=PURPLE, text_color=WHITE, font=DEFAULT_FONT_STYLE, corner_radius=0, border_width=0, hover_color=LABEL_COLOR, command=lambda operator_symbol=operator: self.append_operator(operator_symbol))
             button.grid(row=row_index, column=4, sticky="nsew")
             row_index += 1
 
-    # Clears the current and total expressions and updates the display
     def clear(self):
-        self.current_expression = "0.0"
+        """
+        Clears the current expression and total expression.
+        Sets the starting value of "0" for the current expression.
+        """
+        self.current_expression = "0"
         self.total_expression = ""
         self.update_total_label()
         self.update_label()
 
-    # Clears the last entry in the current expression
     def clear_entry(self):
-        if len(self.current_expression) > 1 and self.current_expression not in (self.ERROR_MESSAGE, "0.0", "0", *chain(self.emotions)):
+        """
+        Removes the last character from the current expression.
+        If empty, sets the value to "0".
+        """
+        if len(self.current_expression) > 1 and self.current_expression not in (self.ERROR_MESSAGE, "0", *chain(self.emotions)):
             self.current_expression = self.current_expression[:-1]
-
         else:
-            self.current_expression = "0.0"
+            self.current_expression = "0"
 
         self.update_label()
 
     def create_clear_entry_button(self):
+        """
+        Creates a "CE" (Clear Entry) button to delete the last character.
+        """
         button = ctk.CTkButton(self.buttons_frame, text="CE", fg_color=WHITE, text_color=LABEL_COLOR, font=DEFAULT_FONT_STYLE, corner_radius=0, hover_color=OFF_WHITE, border_width=0, command=self.clear_entry)
         button.grid(row=0, column=1, sticky="nsew")
 
-    # Squares the current expression value
     def square(self):
+        """
+        Calculates the square of the current expression.
+        If the expression is incorrect, an error message is displayed.
+        """
         try:
             value = float(self.current_expression)
             self.current_expression = str(round(value**2, 2))
@@ -230,11 +281,17 @@ class Calculator:
             self.update_label()
 
     def create_square_button(self):
+        """
+        Creates the "x²" button to calculate the square of the current value.
+        """
         button = ctk.CTkButton(self.buttons_frame, text="x²", fg_color=WHITE, text_color=LABEL_COLOR, font=DEFAULT_FONT_STYLE, corner_radius=0, hover_color=OFF_WHITE, border_width=0, command=self.square)
         button.grid(row=0, column=2, sticky="nsew")
 
-    # Calculates the square root of the current expression value
     def sqrt(self):
+        """
+        Calculates the square root of the current expression.
+        If the expression is incorrect or the number is negative, an error message is displayed.
+        """
         try:
             value = float(self.current_expression)
             if value < 0:
@@ -247,52 +304,76 @@ class Calculator:
             self.update_label()
 
     def create_sqrt_button(self):
+        """
+        Creates the "√x" button to calculate the square root of the current value.
+        """
         button = ctk.CTkButton(self.buttons_frame, text="√x", fg_color=WHITE, text_color=LABEL_COLOR, font=DEFAULT_FONT_STYLE, corner_radius=0, hover_color=OFF_WHITE, border_width=0, command=self.sqrt)
         button.grid(row=0, column=3, sticky="nsew")
 
-    # Evaluates the total expression and updates the result or shows error if invalid
     def evaluate(self):
+        """
+        Calculates the result of the total expression.
+        Uses a safe interpreter to evaluate the expression.
+        If the expression is invalid, displays an error message.
+        """
         if self.current_expression == self.ERROR_MESSAGE:
             self.clear()
+            return
 
         self.total_expression += self.current_expression
         self.update_total_label()
 
         try:
-            result = eval(self.total_expression)
-            self.current_expression = str(round(result, 2))
-            self.total_expression = ""
-        except Exception as e:
+            aeval = Interpreter()
+            result = aeval(self.total_expression)
+            if isinstance(result, (int, float)):
+                self.current_expression = str(round(result, 2))
+                self.total_expression = ""
+            else:
+                raise ValueError("Invalid result")
+        except Exception:
             self.current_expression = self.ERROR_MESSAGE
-            self.update_label()
-        else:
+        finally:
             self.update_label()
 
-    # Creates the "=" button to trigger evaluation
     def create_equals_button(self):
+        """
+        Creates the "=" (Equal) button to calculate the result of the total expression.
+        """
         button = ctk.CTkButton(self.buttons_frame, text="=", fg_color=YELLOW, text_color=WHITE, font=DEFAULT_FONT_STYLE, corner_radius=0, hover_color=LABEL_COLOR, border_width=0, command=self.evaluate)
         button.grid(row=4, column=3, columnspan=2, sticky="nsew")
 
-    # Creates the frame for all the calculator buttons
     def create_buttons_frame(self):
+        """
+        Creates a frame for all the calculator buttons.
+        """
         frame = ctk.CTkFrame(self.window)
         frame.pack(expand=True, fill="both")
         return frame
 
-    # Updates the total expression label with the current total expression
     def update_total_label(self):
+        """
+        Updates the label with the total expression.
+        """
         self.total_label.configure(text=self.total_expression)
 
-    # Updates the current expression label with the current expression (up to 14 characters)
     def update_label(self):
+        """
+        Updates the label with the current expression.
+        """
         self.label.configure(text=self.current_expression)
 
-    # Run the calculator app
     def run(self):
+        """
+        Runs the main application window.
+        """
         self.window.mainloop()
 
 if __name__ == "__main__":
-    # Create an instance of the Calculator class and run the application
+    """
+    Main entry point for the calculator application.
+    Creates an instance of the Calculator class and runs the main application window.
+    """
     calc = Calculator()
     calc.run()
 
