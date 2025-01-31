@@ -1,5 +1,8 @@
 # CTK Calculator by Batyrzhan (@SielunSankari)
 
+[![Python Version](https://img.shields.io/badge/python-3.9%2B-yellow)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-purple)](https://github.com/SielunSankari/cozy-ctk-calc/blob/main/LICENSE)
+
 A minimalistic and aesthetically pleasing calculator built with Python using `customtkinter`. It features simple functionality with a random emoji at the start of the operation (¬‿¬)
 
 ![Image](https://github.com/user-attachments/assets/05a6fb9e-4300-40ca-b130-73310aff5279)
