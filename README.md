@@ -11,8 +11,6 @@ A minimalistic and aesthetically pleasing calculator built with Python using `cu
 - Custom icon and personalized branding.
 - Clear and simple interface.
 
-![Image](https://github.com/user-attachments/assets/de0f1215-544a-4c15-a8e8-80802c0fa2d3)
-
 ---
 
 ## Requirements
