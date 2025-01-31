@@ -1,8 +1,8 @@
-# CTK Calculator by Batyrzhan
-
-![Image](https://github.com/user-attachments/assets/05a6fb9e-4300-40ca-b130-73310aff5279)
+# CTK Calculator by Batyrzhan (@SielunSankari)
 
 A minimalistic and aesthetically pleasing calculator built with Python using `customtkinter`. It features simple functionality with a random emoji at the start of the operation (¬‿¬)
+
+![Image](https://github.com/user-attachments/assets/05a6fb9e-4300-40ca-b130-73310aff5279)
 
 ---
 
@@ -10,6 +10,8 @@ A minimalistic and aesthetically pleasing calculator built with Python using `cu
 - Basic arithmetic operations: addition, subtraction, multiplication, and division.
 - Custom icon and personalized branding.
 - Clear and simple interface.
+
+![Image](https://github.com/user-attachments/assets/cfe06631-1ccc-446e-8709-22947b43c2ec)
 
 ---
 
